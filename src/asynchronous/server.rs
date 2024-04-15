@@ -252,12 +252,16 @@ async fn spawn_connection_handler<S>(
         let (tx, mut rx): (Sender<Vec<u8>>, Receiver<Vec<u8>>) = channel(100);
         let (client_disconnected_tx, client_disconnected_rx) = watch::channel(false);
 
+        let resp_done_tx = req_done_tx.clone();
+
         spawn(async move {
             while let Some(buf) = rx.recv().await {
                 if let Err(e) = writer.write_all(&buf).await {
                     error!("write_message got error: {:?}", e);
                 }
             }
+
+            drop(resp_done_tx);
         });
 
         loop {
@@ -297,6 +301,7 @@ async fn spawn_connection_handler<S>(
             }
         }
 
+        drop(tx);
         drop(req_done_tx);
         all_req_done_rx.recv().await;
         drop(conn_done_tx);
