@@ -6,10 +6,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [uipath-ubuntu-latest, macos-latest, uipath-windows-latest]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26  # v3.7.0
       - name: Check
         run: |
           make check-all
@@ -19,10 +19,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [uipath-ubuntu-latest, macos-latest, uipath-windows-latest]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26  # v3.7.0
       - name: Build
         run: |
           make
@@ -31,7 +31,7 @@ jobs:
           make -C example build-examples
 
   deny:
-    runs-on: ubuntu-latest
+    runs-on: uipath-ubuntu-latest
     strategy:
       matrix:
         checks:
@@ -42,7 +42,7 @@ jobs:
     continue-on-error: ${{ matrix.checks == 'advisories' }}
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: EmbarkStudios/cargo-deny-action@v1
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26  # v3.7.0
+      - uses: EmbarkStudios/cargo-deny-action@3f4a782664881cf5725d0ffd23969fcce89fd868  # v1.6.3
         with:
           command: check ${{ matrix.checks }}

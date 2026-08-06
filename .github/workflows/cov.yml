@@ -4,19 +4,19 @@ on: [pull_request]
 
 jobs:
   coverage:
-    runs-on: ubuntu-latest
+    runs-on: uipath-ubuntu-latest
     env:
       CARGO_TERM_COLOR: always
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26  # v3.7.0
       - name: Install Rust
         run: rustup toolchain install stable --component llvm-tools-preview
       - name: Install cargo-llvm-cov
-        uses: taiki-e/install-action@cargo-llvm-cov
+        uses: taiki-e/install-action@faf6515f98a6da02430741fd0af1094fde82286d  # cargo-llvm-cov
       - name: Generate code coverage
         run: cargo llvm-cov --all-features --lcov --output-path lcov.info
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@ab904c41d6ece82784817410c45d8b8c02684457  # v3.1.6
         with:
           files: lcov.info
           fail_ci_if_error: true
